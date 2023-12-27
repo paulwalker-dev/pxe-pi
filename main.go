@@ -3,6 +3,8 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/ulikunitz/xz"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -34,9 +36,37 @@ func GetLatestRelease() string {
 		release = string(releaseRaw)
 	}
 	log.Printf("Verison: %s", release)
-	return string(releaseRaw)
+	return release
+}
+
+func DownloadRelease(release string) {
+	url := fmt.Sprintf("https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-%s/%s-raspios-bookworm-arm64-lite.info", release, release)
+	resp, err := http.Get(url)
+	defer resp.Body.Close()
+	if err != nil {
+		log.Fatal(err)
+	}
+	r, err := xz.NewReader(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fi, err := os.OpenFile("/srv/raspios.img", 0, 0o644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = io.Copy(fi, r)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func EnsureDownload(release string) {
+	if _, err := os.Stat("/srv/raspios.img"); err != nil {
+		DownloadRelease(release)
+	}
 }
 
 func main() {
-	fmt.Println(GetLatestRelease())
+	release := GetLatestRelease()
+	EnsureDownload(release)
 }
