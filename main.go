@@ -26,6 +26,7 @@ func GetLatestRelease() string {
 func main() {
 	releaseRaw, err := os.ReadFile("/srv/release")
 	if err != nil {
+		log.Println("Downloading Raspberry Pi OS release notes")
 		releaseRaw = []byte(GetLatestRelease())
 		err := os.WriteFile("/srv/release", releaseRaw, 0o644)
 		if err != nil {
