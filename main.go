@@ -40,7 +40,7 @@ func GetLatestRelease() string {
 }
 
 func DownloadRelease(release string) {
-	url := fmt.Sprintf("https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-%s/%s-raspios-bookworm-arm64-lite.info", release, release)
+	url := fmt.Sprintf("https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-%s/%s-raspios-bookworm-arm64-lite.img.xz", release, release)
 	resp, err := http.Get(url)
 	defer resp.Body.Close()
 	if err != nil {
