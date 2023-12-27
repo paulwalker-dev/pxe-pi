@@ -29,6 +29,7 @@ func GetLatestRelease() string {
 			log.Fatal(err)
 		}
 	}
+	log.Printf("Verison: %s", releaseRaw)
 	return string(releaseRaw)
 }
 
