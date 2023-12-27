@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -27,13 +26,9 @@ func GetLatestRelease() string {
 func main() {
 	releaseRaw, err := os.ReadFile("/srv/release")
 	if err != nil {
-		if errors.Is(os.ErrNotExist, err) {
-			releaseRaw = []byte(GetLatestRelease())
-			err := os.WriteFile("/srv/release", releaseRaw, 0o644)
-			if err != nil {
-				log.Fatal(err)
-			}
-		} else {
+		releaseRaw = []byte(GetLatestRelease())
+		err := os.WriteFile("/srv/release", releaseRaw, 0o644)
+		if err != nil {
 			log.Fatal(err)
 		}
 	}
