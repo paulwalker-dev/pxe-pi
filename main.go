@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -34,5 +33,5 @@ func main() {
 		}
 	}
 	release := string(releaseRaw)
-	fmt.Printf("Release: %s\n", release)
+	log.Printf("Base Layer is version: %s\n", release)
 }
