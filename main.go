@@ -50,7 +50,7 @@ func DownloadRelease(release string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fi, err := os.OpenFile("/srv/raspios.img", 0, 0o644)
+	fi, err := os.OpenFile("/srv/raspios.img", os.O_CREATE, 0o644)
 	if err != nil {
 		log.Fatal(err)
 	}
